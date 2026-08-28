@@ -7,7 +7,7 @@
 ]]
 
 -- ==================== 加载 FOV 微调卡片 ====================
-local FOVAdjust = loadstring(game:HttpGet("https://github.com/ehejvejshwj1/73378227dhjaix/releases/download/11/FOVAdjust.lua"))()
+local FOVAdjust = loadstring(game:HttpGet("https://raw.githubusercontent.com/ehejvejshwj1/Roblox-Antibot/main/FOVAdjust.lua"))()
 FOVAdjust:Create()
 FOVAdjust:SetTitle("🎯 FOV 圈微调")
 
