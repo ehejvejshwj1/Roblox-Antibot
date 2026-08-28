@@ -1,11 +1,6 @@
 --[[
-    FOV 微调卡片 v1.0
+    FOV 微调卡片 v1.1 (支持拖动)
     独立纯 GUI，不依赖任何 UI 库
-    用法：
-        local FOVAdjust = loadstring(game:HttpGet("你的GitHub链接"))()
-        FOVAdjust:Create()
-        FOVAdjust:SetVisible(true)
-        FOVAdjust:SetOnChange(function(x, y) print("偏移:", x, y) end)
 ]]
 
 local FOVAdjust = {
@@ -19,7 +14,6 @@ local FOVAdjust = {
     Title = "🎯 FOV 圈微调",
 }
 
--- ==================== 创建 UI ====================
 function FOVAdjust:Create()
     if self.Gui then return self end
 
@@ -51,6 +45,37 @@ function FOVAdjust:Create()
 
     self.Container = container
 
+    -- ========== 拖动功能 ==========
+    local dragging = false
+    local dragStart, startPos
+
+    container.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = container.Position
+        end
+    end)
+
+    container.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+
+    container.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            container.Position = UDim2.new(
+                startPos.X.Scale,
+                startPos.X.Offset + delta.X,
+                startPos.Y.Scale,
+                startPos.Y.Offset + delta.Y
+            )
+        end
+    end)
+
+    -- ========== UI 元素 ==========
     -- 标题
     local title = Instance.new("TextLabel")
     title.Name = "Title"
